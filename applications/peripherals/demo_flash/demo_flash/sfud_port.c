@@ -29,6 +29,8 @@
 #include <sfud.h>
 #include <stdarg.h>
 #include <hosal_spi.h>
+#include <bl_gpio.h>
+#include <blog.h>
 
 static char log_buf[256];
 
@@ -41,7 +43,7 @@ static hosal_spi_dev_t spi0 = {
     .cb = NULL,
     .config = {
         .dma_enable = 0,
-        .freq = 100000,
+        .freq = 2000000,
         .mode = HOSAL_SPI_MODE_MASTER,
         .pin_clk = SPI_CLK,
         .pin_miso = SPI_MISO,
@@ -62,9 +64,14 @@ static sfud_err spi_write_read(const sfud_spi *spi, const uint8_t *write_buf, si
     sfud_err result = SFUD_SUCCESS;
     uint8_t send_data, read_data;
 
-    hosal_spi_send(&spi0, write_buf, write_size, HOSAL_WAIT_FOREVER);
-    hosal_spi_recv(&spi0, read_buf, read_size, HOSAL_WAIT_FOREVER);
-
+    bl_gpio_output_set(SPI_SS, 0);
+    if (write_size) {
+        hosal_spi_send(&spi0, write_buf, write_size, HOSAL_WAIT_FOREVER);
+    }
+    if (read_size) {
+        hosal_spi_recv(&spi0, read_buf, read_size, HOSAL_WAIT_FOREVER);
+    }
+    bl_gpio_output_set(SPI_SS, 1);
     return result;
 }
 
@@ -103,6 +110,14 @@ sfud_err sfud_spi_port_init(sfud_flash *flash) {
      */
 
     hosal_spi_init(&spi0);
+
+    bl_gpio_enable_output(SPI_SS, 0, 0);
+    bl_gpio_output_set(SPI_SS, 1);
+
+    flash->spi.wr = spi_write_read;
+    flash->spi.user_data = &spi0;
+    flash->retry.delay = NULL;
+    flash->retry.times = 10000;
 
     return result;
 }
