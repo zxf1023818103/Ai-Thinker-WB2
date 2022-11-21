@@ -36,7 +36,7 @@ COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 COMPONENT_SRCDIRS := ./\
 core\
 draw\
-draw\sw\
+draw/sw\
 extra\
 font\
 hal\
