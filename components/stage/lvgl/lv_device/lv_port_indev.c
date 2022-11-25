@@ -11,6 +11,7 @@
  *********************/
 #include "lv_port_indev.h"
 #include "lvgl.h"
+#include "hosal_i2c.h"
 #include "cst816.h"
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -186,24 +187,30 @@ void lv_port_indev_init(void)
   * Touchpad
   * -----------------*/
 
+static hosal_i2c_dev_t i2c0 = {
+    .config = {
+        .address_width = HOSAL_I2C_ADDRESS_WIDTH_7BIT,
+        .freq = 400000,
+        .mode = HOSAL_I2C_MODE_MASTER,
+        .scl = CST816_SCL,
+        .sda = CST816_SDA,
+    },
+    .port = 0,
+};
+
   /*Initialize your touchpad*/
 static void touchpad_init(void)
 {
-    cst816_init();
+    hosal_i2c_init(&i2c0);
 }
 
 /*Will be called by the library to read the touchpad*/
 static void touchpad_read(lv_indev_drv_t* indev_drv, lv_indev_data_t* data)
 {
-    touch_point_t point;
-    if (pdTRUE == xQueueReceiveFromISR(touch_point_queue, &point, 0)) {
-        data->state = point.fingers ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
-        data->point.x = point.x;
-        data->point.y = point.y;
-        data->continue_reading = true;
-
-        blog_info("%s (%u, %u)\r\n", point.fingers ? "pressed" : "released", point.x, point.y);
-    }
+    hosal_i2c_mem_read(&i2c0, CST816_DEFAULT_ADDR, 0x02, 1, &data->state, 1, 10);
+    hosal_i2c_mem_read(&i2c0, CST816_DEFAULT_ADDR, 0x04, 1, &data->point.y, 1, 10);
+    hosal_i2c_mem_read(&i2c0, CST816_DEFAULT_ADDR, 0x06, 1, &data->point.x, 1, 10);
+    data->point.x = 240 - data->point.x;
 }
 
 #if 0
