@@ -16,11 +16,11 @@ BL60X_SDK_PATH_GUESS ?= $(shell pwd)
 BL60X_SDK_PATH ?= $(BL60X_SDK_PATH_GUESS)/../../..
 endif
 
-COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
+COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset blsync_ble blestack blecontroller_602_std
 COMPONENTS_VFS     := romfs  
-COMPONENTS_LVGL    := lvgl lv_device lv_srcs draw  extra extra_themes extra_layouts extra_libs extra_others extra_widgets 
+COMPONENTS_LVGL    := lvgl lv_device lv_srcs draw  extra extra_themes extra_layouts extra_libs extra_others extra_widgets disp_device
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc hosal mbedtls_lts lwip vfs yloop utils cli blog blog_testc coredump disp_device
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi wifi_manager wpa_supplicant hosal mbedtls_lts lwip lwip_dhcpd vfs yloop utils cli httpc netutils blog blog_testc blsync_ble cjson blcrypto_suite bl_os_adapter wifi_hosal sntp dns_server
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
