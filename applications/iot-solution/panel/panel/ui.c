@@ -8,6 +8,7 @@
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"
 #include "lvgl.h"
+#include "icon.h"
 
 LV_FONT_DECLARE(font_awesome_pro_60);
 
@@ -54,7 +55,7 @@ static void create_ui(void)
         lv_obj_set_grid_dsc_array(tile, column_dsc, row_dsc);
 
         lv_obj_t * humidity_icon_label = lv_label_create(tile);
-        lv_label_set_text(humidity_icon_label, "\xEF\x9D\x90");
+        lv_label_set_text(humidity_icon_label, ICON_DROPLET_PERCENT);
         lv_obj_set_style_text_font(humidity_icon_label, &font_awesome_pro_60, 0);
         lv_obj_set_style_text_align(humidity_icon_label, LV_TEXT_ALIGN_CENTER, 0);
         lv_obj_set_grid_cell(humidity_icon_label, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_CENTER, 0, 1);
@@ -66,7 +67,7 @@ static void create_ui(void)
         lv_obj_set_grid_cell(humidity_value_label, LV_GRID_ALIGN_END, 3, 1, LV_GRID_ALIGN_CENTER, 0, 1);
 
         temperature_icon_label = lv_label_create(tile);
-        lv_label_set_text(temperature_icon_label, "\xEF\x8B\x89");
+        lv_label_set_text(temperature_icon_label, ICON_TEMPERATURE_HALF);
         lv_obj_set_style_text_font(temperature_icon_label, &font_awesome_pro_60, 0);
         lv_obj_set_style_text_align(temperature_icon_label, LV_TEXT_ALIGN_CENTER, 0);
         lv_obj_set_grid_cell(temperature_icon_label, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_CENTER, 1, 1);
@@ -96,7 +97,7 @@ static void create_ui(void)
             lv_obj_set_grid_cell(room1_button, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_CENTER, 0, 1);
 
             room1_icon = lv_label_create(room1_button);
-            lv_label_set_text(room1_icon, "\xEF\x83\xAB");
+            lv_label_set_text(room1_icon, ICON_LIGHTBULB_EXCLAMATION);
             lv_obj_set_style_text_font(room1_icon, &font_awesome_pro_60, 0);
             lv_obj_set_style_text_align(room1_icon, LV_TEXT_ALIGN_CENTER, 0);
             lv_obj_set_grid_cell(room1_icon, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
@@ -113,7 +114,7 @@ static void create_ui(void)
             lv_obj_set_grid_cell(room2_button, LV_GRID_ALIGN_STRETCH, 3, 1, LV_GRID_ALIGN_CENTER, 0, 1);
 
             room2_icon = lv_label_create(room2_button);
-            lv_label_set_text(room2_icon, "\xEF\x83\xAB");
+            lv_label_set_text(room2_icon, ICON_LIGHTBULB_EXCLAMATION);
             lv_obj_set_style_text_font(room2_icon, &font_awesome_pro_60, 0);
             lv_obj_set_style_text_align(room2_icon, LV_TEXT_ALIGN_CENTER, 0);
             lv_obj_set_grid_cell(room2_icon, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
@@ -126,7 +127,7 @@ static void create_ui(void)
         }
 
         people_icon = lv_label_create(tile);
-        lv_label_set_text(people_icon, "\xEF\x88\xB5");
+        lv_label_set_text(people_icon, ICON_USER_XMARK);
         lv_obj_set_style_text_font(people_icon, &font_awesome_pro_60, 0);
         lv_obj_set_style_text_align(people_icon, LV_TEXT_ALIGN_CENTER, 0);
         lv_obj_set_grid_cell(people_icon, LV_GRID_ALIGN_STRETCH, 1, 3, LV_GRID_ALIGN_CENTER, 1, 1);
